@@ -106,7 +106,7 @@
             touchEndY = e.changedTouches[0].screenY;
 
             // Rotate the image faster
-            rotation += (touchStartY - touchEndY) * 0.1;
+            rotation += (touchStartY - touchEndY) * 0.2;
             img.style.transform = `rotate(${rotation}deg)`;
 
             // Bounce the text
