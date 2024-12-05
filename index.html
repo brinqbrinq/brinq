@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Image on Scroll</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* Add the background image */
+            background-image: url('https://i.ibb.co/LrZnxgd/BRINQ-OFFICIAL-TEXTURE.png');
+            background-repeat: repeat;
+            background-size: auto;
+            background-attachment: fixed;
+            background-color: #333333; /* Updated background color */
+            overflow: hidden;
+        }
+        #container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        img {
+            max-width: 80%;
+            max-height: 80%;
+            transition: transform 0.1s ease-out;
+            position: relative;
+            z-index: 1; /* Ensures the image stays behind the text */
+        }
+        .text {
+            position: absolute;
+            z-index: 2; /* Ensures the text stays above the image */
+            font-family: "Courier New", Courier, monospace;
+            font-size: 2rem;
+            color: orange;
+            font-weight: light;
+            text-align: center;
+            transition: transform 0.2s ease-out; /* Smooth bounce effect */
+        }
+        .text a {
+            color: orange;
+            text-decoration: none;
+        }
+        .text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="text" id="emailText">
+            <a href="mailto:HEY@BRINQ.COM.AU">HEY@BRINQ.COM.AU</a>
+        </div>
+        <img src="https://i.ibb.co/nMLyKs1/LCMI.png" alt="Rotating Image">
+    </div>
+
+    <script>
+        const img = document.querySelector('img');
+        const emailText = document.getElementById('emailText');
+        let rotation = 0;
+
+        document.addEventListener('wheel', (e) => {
+            // Rotate the image
+            rotation += e.deltaY * 0.025;
+            img.style.transform = `rotate(${rotation}deg)`;
+
+            // Bounce the text
+            const bounceAmount = e.deltaY > 0 ? -10 : 10; // Move up or down based on scroll direction
+            emailText.style.transform = `translateY(${bounceAmount}px)`;
+
+            // Reset the text position after a short delay
+            setTimeout(() => {
+                emailText.style.transform = 'translateY(0)';
+            }, 200);
+
+            e.preventDefault();
+        });
+
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+
+            // Rotate the image
+            rotation += (touchStartY - touchEndY) * 0.025;
+            img.style.transform = `rotate(${rotation}deg)`;
+
+            // Bounce the text
+            const bounceAmount = touchStartY - touchEndY > 0 ? -10 : 10; // Move up or down based on scroll direction
+            emailText.style.transform = `translateY(${bounceAmount}px)`;
+
+            // Reset the text position after a short delay
+            setTimeout(() => {
+                emailText.style.transform = 'translateY(0)';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
